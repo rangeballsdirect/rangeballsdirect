@@ -1,0 +1,13 @@
+{
+  "name": "rangeballsdirect",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for RangeBallsDirect",
+  "type": "module",
+  "scripts": {
+    "test": "node test/verify.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.56.0"
+  }
+}
