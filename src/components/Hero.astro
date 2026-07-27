@@ -1,0 +1,108 @@
+---
+import { hero } from '../data/site';
+const [line1, line2] = hero.headline;
+---
+
+<section class="hero" id="main">
+  <div>
+    <p class="hero__eyebrow">{hero.eyebrow}</p>
+    <h1 class="hero__title">{line1}<br />{line2}<span class="hero__stop">.</span></h1>
+    <p class="hero__body">{hero.body}</p>
+    <div class="hero__actions">
+      <a class="btn btn--pop" href="#enquiry">Make an enquiry →</a>
+      <a class="btn btn--ghost" href="#range">See the range</a>
+    </div>
+  </div>
+
+  <div class="hero__stats">
+    {hero.stats.map(({ figure, note, accent }) => (
+      <div class="stat">
+        <div class:list={['stat__figure', accent && 'stat__figure--accent']}>{figure}</div>
+        <div class="stat__note">{note}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.14fr 0.86fr;
+    gap: 48px;
+    align-items: center;
+    padding: 84px var(--pad) 80px;
+  }
+
+  .hero__eyebrow {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--pop);
+    margin: 0 0 24px;
+  }
+
+  .hero__title {
+    font-weight: 700;
+    font-size: 76px;
+    line-height: 0.97;
+    letter-spacing: -0.035em;
+    margin: 0 0 24px;
+    color: #fff;
+  }
+
+  .hero__stop { color: var(--pop); }
+
+  .hero__body {
+    font-size: 18px;
+    line-height: 1.58;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 34em;
+    margin: 0 0 32px;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .hero__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .stat {
+    border: 1px solid var(--lined);
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+
+  .stat__figure {
+    font-weight: 700;
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+
+  .stat__figure--accent { color: var(--pop); }
+
+  .stat__note {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; }
+    .hero__title { font-size: 44px; }
+  }
+
+  @media (max-width: 420px) {
+    .hero__title { font-size: 38px; }
+  }
+</style>

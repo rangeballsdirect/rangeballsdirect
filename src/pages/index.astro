@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import CountryStrip from '../components/CountryStrip.astro';
+import WhyUs from '../components/WhyUs.astro';
+import BallRange from '../components/BallRange.astro';
+import Process from '../components/Process.astro';
+import Enquiry from '../components/Enquiry.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<Base title="RangeBallsDirect — Range balls sourced direct, delivered across Europe">
+  <div class="site">
+    <div class="masthead">
+      <Nav />
+      <Hero />
+      <CountryStrip />
+    </div>
+
+    <WhyUs />
+    <BallRange />
+    <Process />
+    <Enquiry />
+    <SiteFooter />
+  </div>
+</Base>
+
+<style>
+  .masthead { background: var(--ink); color: #fff; }
+</style>

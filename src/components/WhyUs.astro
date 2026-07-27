@@ -1,0 +1,134 @@
+---
+// Two jobs the business actually does: vet the factory, then land the pallet.
+---
+
+<section class="why band" id="quality">
+  <header class="why__head">
+    <h2 class="h2">Why RangeBallsDirect</h2>
+    <span class="why__kicker">Two jobs, done properly</span>
+  </header>
+
+  <div class="why__grid">
+    <article class="card card--feature">
+      <p class="card__eyebrow card__eyebrow--accent">01 — Quality control</p>
+      <h3 class="card__title">We inspect the factory<br />in person</h3>
+      <p class="card__body">
+        We walk the floor of every candidate factory in mainland China — checking cover
+        consistency, core compression, print and durability against the spec you signed off.
+        Nothing is bought sight unseen.
+      </p>
+      <!-- Placeholder. Swap for a real photograph: see README. -->
+      <div class="ph card__media"><span class="ph__cap">Factory floor — Qingdao</span></div>
+    </article>
+
+    <article class="card card--quiet">
+      <p class="card__eyebrow">02 — Import &amp; delivery</p>
+      <h3 class="card__title card__title--sm">Handled end to end</h3>
+      <p class="card__body card__body--muted">
+        Freight, customs and onward delivery across Europe — all managed by us. You place one
+        order; we bring the balls to your range, ready for the tee line.
+      </p>
+    </article>
+
+    <article class="card card--pop">
+      <div class="card__figure">48-point</div>
+      <div class="card__caption">cover, core &amp; flight inspection on every production run</div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .why__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 34px;
+  }
+
+  .why__kicker {
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .why__grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+  }
+
+  .card { border-radius: 18px; padding: 30px; }
+
+  .card--feature {
+    grid-row: 1 / 3;
+    background: var(--ink);
+    color: #fff;
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card--quiet { background: var(--bone); border: 1px solid var(--line); }
+
+  .card--pop {
+    background: var(--pop);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card__eyebrow {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  .card__eyebrow--accent { color: var(--pop); margin-bottom: 16px; }
+
+  .card__title {
+    font-weight: 700;
+    font-size: 31px;
+    letter-spacing: -0.025em;
+    line-height: 1.04;
+    margin: 0 0 14px;
+    color: inherit;
+  }
+
+  .card__title--sm { font-size: 25px; letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 12px; }
+
+  .card__body {
+    font-size: 15px;
+    line-height: 1.62;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 24px;
+    max-width: 44ch;
+  }
+
+  .card__body--muted { font-size: 14.5px; line-height: 1.6; color: var(--muted); margin: 0; max-width: none; }
+
+  .card__media { height: 184px; border-radius: 12px; margin-top: auto; }
+
+  .card__figure {
+    font-weight: 700;
+    font-size: 46px;
+    letter-spacing: -0.03em;
+    color: var(--pop-text);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .card__caption { font-size: 14px; font-weight: 500; color: rgba(10, 10, 10, 0.72); }
+
+  @media (max-width: 900px) {
+    .why__grid { grid-template-columns: 1fr; gap: 28px; }
+    /* Without this the feature card keeps its two-row span and leaves a hole. */
+    .card--feature { grid-row: auto; }
+  }
+</style>

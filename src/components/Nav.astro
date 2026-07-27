@@ -1,0 +1,50 @@
+---
+import Wordmark from './Wordmark.astro';
+import { nav } from '../data/site';
+---
+
+<nav class="nav" aria-label="Primary">
+  <Wordmark />
+  <div class="nav__links">
+    {nav.map(({ label, href }) => <a href={href}>{label}</a>)}
+  </div>
+  <a class="btn btn--pop btn--sm" href="#enquiry">Make an enquiry</a>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px var(--pad);
+    border-bottom: 1px solid var(--lined);
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .nav__links a { text-decoration: none; transition: 0.16s; }
+  .nav__links a:hover { color: var(--pop); }
+
+  @media (max-width: 900px) {
+    .nav { flex-wrap: wrap; gap: 14px; }
+
+    /* Links drop to their own full-width row so the logo and CTA stay paired. */
+    .nav__links {
+      order: 3;
+      width: 100%;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 13.5px;
+    }
+
+    /* 18px of text is not a tap target. */
+    .nav__links a { padding: 11px 0; display: inline-block; }
+  }
+</style>

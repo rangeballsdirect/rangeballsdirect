@@ -1,0 +1,57 @@
+---
+import { process } from '../data/site';
+---
+
+<section class="process band" id="delivery">
+  <h2 class="h2 process__title">From factory floor to tee line</h2>
+  <ol class="process__grid">
+    {process.map(({ step, title, note }) => (
+      <li class="step">
+        <div class="step__num" aria-hidden="true">{step}</div>
+        <h3 class="step__title">{title}</h3>
+        <p class="step__note">{note}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .process { background: var(--ink); color: #fff; padding-top: 76px; padding-bottom: 76px; }
+
+  /*
+   * The one heading that carries default leading rather than the shared 1.02.
+   * It is the only h2 that wraps to two lines on a phone, where 1.02 collides.
+   */
+  .process__title { font-size: 38px; line-height: normal; margin-bottom: 40px; color: #fff; }
+
+  .process__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 26px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .step__num {
+    font-weight: 700;
+    font-size: 40px;
+    letter-spacing: -0.02em;
+    color: var(--pop);
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+
+  .step__title { font-size: 15px; font-weight: 600; letter-spacing: normal; margin: 0 0 7px; color: #fff; }
+
+  .step__note { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.6); margin: 0; }
+
+  @media (max-width: 900px) {
+    .process__title { font-size: 30px; }
+    .process__grid { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+  }
+
+  @media (max-width: 420px) {
+    .process__title { font-size: 27px; }
+  }
+</style>

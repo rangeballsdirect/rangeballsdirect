@@ -23,10 +23,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
       - run: npm ci
+      - name: Type-check
+        run: npx astro check
       - name: Install Chromium
         run: npx --yes playwright@1.56.0 install --with-deps chromium
-      - run: npm test
+      - name: Build and verify
+        run: npm test
 
   deploy:
     needs: test
@@ -37,14 +41,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Stage the public files
-        run: |
-          mkdir _site
-          cp index.html 404.html og.png apple-touch-icon.png robots.txt sitemap.xml .nojekyll _site/
-          if [ -f CNAME ]; then cp CNAME _site/; fi
-      - uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      - name: Build
+        # Canonical, OG and sitemap URLs come from the Pages config, so the same
+        # commit is correct on a project URL or a custom domain.
+        run: npx astro build
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
       - id: deployment
         uses: actions/deploy-pages@v4

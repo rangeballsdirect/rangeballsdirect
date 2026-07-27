@@ -2,12 +2,21 @@
   "name": "rangeballsdirect",
   "version": "1.0.0",
   "private": true,
-  "description": "Static marketing site for RangeBallsDirect",
+  "description": "Marketing site for RangeBallsDirect — Astro, static output",
   "type": "module",
   "scripts": {
-    "test": "node test/verify.mjs"
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "test": "astro build && node test/verify.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.4"
   },
   "devDependencies": {
-    "playwright-core": "^1.56.0"
+    "@astrojs/check": "^0.9.10",
+    "playwright-core": "^1.56.0",
+    "typescript": "^6.0.3"
   }
 }

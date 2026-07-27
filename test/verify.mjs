@@ -1,17 +1,54 @@
-// End-to-end checks for index.html: responsive layout, form behaviour, links, a11y, metadata.
-//   npm test            run the suite
-//   npm test -- --shots write full-page screenshots to test/shots/
+// End-to-end checks against the built site in dist/: responsive layout, form
+// behaviour, links, accessibility and metadata.
+//
+//   npm test              build, then run the suite
+//   npm test -- --shots   also write full-page screenshots to test/shots/
+//
+// Serves dist/ over HTTP rather than opening it via file://, because Astro's
+// script bundle is referenced by an absolute path.
 import { chromium } from 'playwright-core';
-import { existsSync, readdirSync, mkdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { existsSync, readdirSync, mkdirSync, readFileSync, statSync } from 'node:fs';
+import { join, dirname, extname, normalize } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
+import { createServer } from 'node:http';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-const URL = pathToFileURL(join(ROOT, 'index.html')).href;
+const DIST = join(ROOT, 'dist');
 const WANT_SHOTS = process.argv.includes('--shots');
 const SHOT = join(ROOT, 'test', 'shots');
 if (WANT_SHOTS) mkdirSync(SHOT, { recursive: true });
+
+if (!existsSync(join(DIST, 'index.html'))) {
+  console.error('dist/index.html is missing — run `npx astro build` first.');
+  process.exit(1);
+}
+
+const MIME = {
+  '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png',
+  '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json',
+};
+
+const server = createServer((req, res) => {
+  const path = decodeURIComponent(req.url.split('?')[0]);
+  let file = normalize(join(DIST, path));
+  if (!file.startsWith(DIST)) return res.writeHead(403).end();
+  if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
+  if (!existsSync(file)) {
+    const notFound = join(DIST, '404.html');
+    if (existsSync(notFound)) {
+      res.writeHead(404, { 'Content-Type': 'text/html' });
+      return res.end(readFileSync(notFound));
+    }
+    return res.writeHead(404).end();
+  }
+  res.writeHead(200, { 'Content-Type': MIME[extname(file)] ?? 'application/octet-stream' });
+  res.end(readFileSync(file));
+});
+
+await new Promise(r => server.listen(0, '127.0.0.1', r));
+const ORIGIN = `http://127.0.0.1:${server.address().port}`;
+const URL = ORIGIN + '/';
 
 // playwright-core does not download browsers. Use CHROME_PATH, else the newest
 // build in the Playwright cache, else fall back to a system Chrome install.
@@ -61,10 +98,10 @@ for (const [w, h, tag] of [[1280, 900, 'desktop'], [375, 812, 'mobile']]) {
 
   const cols = async sel => page.$eval(sel, el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
   const hero = await cols('#main');
-  const enq = await cols('#enq-2a > div');
-  const qcRow = await page.$eval('#qc-2a [style*="grid-row"]', el => getComputedStyle(el).gridRowStart);
-  const proc = await cols('#proc-2a > div[style*="grid-template-columns"]');
-  const formGrid = await cols('#enq-2a div[style*="grid-template-columns:1fr 1fr"]');
+  const enq = await cols('.enquiry__grid');
+  const qcRow = await page.$eval('.card--feature', el => getComputedStyle(el).gridRowStart);
+  const proc = await cols('.process__grid');
+  const formGrid = await cols('.panel__fields');
   const rowCols = await cols('a[data-ball]');
 
   if (tag === 'mobile') {
@@ -74,7 +111,7 @@ for (const [w, h, tag] of [[1280, 900, 'desktop'], [375, 812, 'mobile']]) {
     ok(qcRow === 'auto', `mobile: qc feature card grid-row reset to auto (got ${qcRow})`);
     ok(proc === 2, `mobile: process row is 2 col (got ${proc})`);
     ok(rowCols === 3, `mobile: range rows are 3 col (got ${rowCols})`);
-    const descVisible = await page.$eval('a[data-ball] span:nth-child(3)', el => getComputedStyle(el).display);
+    const descVisible = await page.$eval('.row__blurb', el => getComputedStyle(el).display);
     ok(descVisible === 'none', `mobile: range row description hidden (got ${descVisible})`);
     // hovered range row must not overflow
     await page.hover('a[data-ball]');
@@ -183,7 +220,7 @@ console.log('\n=== links & metadata ===');
   ok(unlabelled.length === 0, `every field has a label ${JSON.stringify(unlabelled)}`);
 
   // "Enquire →" sits on the bone background at rest — it must stay legible there.
-  const ratio = await page.$eval('.enq-tag', el => {
+  const ratio = await page.$eval('.row__cta', el => {
     const rgb = s => s.match(/[\d.]+/g).map(Number);
     const lum = ([r, g, b]) => { const f = c => (c /= 255) <= .03928 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4;
       return .2126 * f(r) + .7152 * f(g) + .0722 * f(b); };
@@ -200,6 +237,33 @@ console.log('\n=== links & metadata ===');
   await page.close();
 }
 
+// --- the 404 route ---
+console.log('\n=== 404 ===');
+{
+  const page = await browser.newPage({ viewport: { width: 375, height: 812 } });
+  const res = await page.goto(ORIGIN + '/no-such-page', { waitUntil: 'load' });
+  ok(res.status() === 404, `unknown path returns 404 (got ${res.status()})`);
+  ok((await page.title()).includes('not found'), 'the 404 page is served, not a bare error');
+  ok(await page.$('meta[name=robots][content*=noindex]') !== null, '404 is noindex');
+  const home = await page.getAttribute('.btn', 'href');
+  ok(!!home, `404 offers a route home (href=${home})`);
+  const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+  ok(sw <= 375, `404 does not overflow at 375px (got ${sw})`);
+  await page.close();
+}
+
+// --- build output ---
+console.log('\n=== build output ===');
+{
+  for (const f of ['og.png', 'apple-touch-icon.png', 'robots.txt', 'sitemap-index.xml', '404.html'])
+    ok(existsSync(join(DIST, f)), `dist/${f} exists`);
+
+  const html = readFileSync(join(DIST, 'index.html'), 'utf8');
+  ok(!/<link[^>]+rel="stylesheet"/.test(html), 'CSS is inlined — no render-blocking stylesheet');
+  ok(!html.includes('undefined'), 'no "undefined" leaked into the markup');
+}
+
 await browser.close();
+server.close();
 console.log('\n' + (fails.length ? 'FAILED: ' + fails.length + '\n- ' + fails.join('\n- ') : 'ALL CHECKS PASSED'));
 process.exit(fails.length ? 1 : 0);

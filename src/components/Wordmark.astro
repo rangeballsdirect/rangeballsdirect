@@ -1,0 +1,33 @@
+---
+import { site } from '../data/site';
+const [head, tail] = site.nameParts;
+---
+
+<span class="mark">
+  <span class="mark__dot" aria-hidden="true"></span>
+  <span class="mark__name">{head}<span class="mark__accent">{tail}</span></span>
+</span>
+
+<style>
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mark__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--pop);
+  }
+
+  .mark__name {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .mark__accent { color: var(--pop); }
+</style>

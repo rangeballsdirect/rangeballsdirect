@@ -1,0 +1,141 @@
+:root {
+  --ink: #0a0a0a;
+  --paper: #ffffff;
+  --bone: #f2f2ef;
+  --pop: #e4ff00;
+  --pop-text: #0a0a0a;
+  --muted: #6b6b6b;
+  --line: rgba(10, 10, 10, 0.13);
+  --lined: rgba(255, 255, 255, 0.16);
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', Manrope, sans-serif;
+  --pad: 48px;
+}
+
+@media (max-width: 900px) {
+  :root { --pad: 22px; }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+html, body { max-width: 100%; overflow-x: hidden; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+img, svg { max-width: 100%; height: auto; }
+input, textarea, button { font-family: inherit; }
+
+.site { max-width: 1180px; margin: 0 auto; }
+
+/* Section rhythm. Every band shares the same horizontal gutter. */
+.band { padding: 80px var(--pad); }
+
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+h1, h2, h3 { letter-spacing: -0.03em; }
+
+.h2 {
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: -0.03em;
+  margin: 0;
+  line-height: 1.02;
+}
+
+@media (max-width: 900px) { .h2 { font-size: 30px; } }
+@media (max-width: 420px) { .h2 { font-size: 27px; } }
+
+/* Buttons ------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  padding: 15px 26px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.16s;
+}
+
+.btn--pop { color: var(--pop-text); background: var(--pop); border-color: var(--pop); }
+.btn--pop:hover { background: #fff; border-color: #fff; }
+
+.btn--ghost { color: #fff; background: transparent; border-color: var(--lined); font-weight: 500; padding: 15px 24px; }
+.btn--ghost:hover { border-color: #fff; background: rgba(255, 255, 255, 0.06); }
+
+/* The compact nav button tracks normally; only the large buttons are tightened. */
+.btn--sm { font-size: 13.5px; padding: 11px 20px; border-radius: 8px; letter-spacing: normal; }
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link ----------------------------------------------------------- */
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 99;
+  font: 600 14px/1 var(--sans);
+  background: var(--pop);
+  color: var(--ink);
+  padding: 12px 18px;
+  border-radius: 0 0 8px 0;
+  text-decoration: none;
+}
+
+.skip:focus { left: 0; }
+
+/* Image placeholder --------------------------------------------------- */
+
+.ph {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0 1.5px, transparent 1.5px 10px),
+    rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lined);
+}
+
+.ph__cap {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--lined);
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

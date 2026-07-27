@@ -1,6 +1,8 @@
+node_modules/
+dist/
+.astro/
+test/shots/
 .DS_Store
 Thumbs.db
 desktop.ini
-node_modules/
 *.log
-test/shots/

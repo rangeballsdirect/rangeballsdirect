@@ -1,0 +1,269 @@
+---
+import { site } from '../data/site';
+
+const fields: {
+  id: string;
+  name: string;
+  label: string;
+  placeholder: string;
+  type: 'text' | 'email';
+  autocomplete: string;
+  required: boolean;
+}[] = [
+  { id: 'f-name', name: 'name', label: 'Your name', placeholder: 'Jane Doe', type: 'text', autocomplete: 'name', required: true },
+  { id: 'f-org', name: 'org', label: 'Range or course', placeholder: 'Fairway Driving Range', type: 'text', autocomplete: 'organization', required: true },
+  { id: 'f-country', name: 'country', label: 'Country', placeholder: 'Germany', type: 'text', autocomplete: 'country-name', required: false },
+  { id: 'f-email', name: 'email', label: 'Email', placeholder: 'jane@fairway.com', type: 'email', autocomplete: 'email', required: true },
+];
+---
+
+<section class="enquiry band" id="enquiry">
+  <div class="enquiry__grid">
+    <div>
+      <p class="eyebrow enquiry__eyebrow">Make an enquiry</p>
+      <h2 class="h2 enquiry__title">Let's talk<br />tee lines.</h2>
+      <p class="enquiry__body">
+        Tell us what your range needs. We'll reply within one working day with options,
+        specifications and pricing — no obligation, and always a named contact.
+      </p>
+    </div>
+
+    <div class="panel">
+      <div id="enqLive">
+        <form
+          id="enqForm"
+          method="post"
+          action={site.formEndpoint}
+          data-endpoint={site.formEndpointAjax}
+          data-email={site.email}
+          novalidate
+        >
+          <input type="text" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input type="hidden" name="_subject" value="New RangeBallsDirect enquiry" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+
+          <div class="panel__fields">
+            {fields.map((f) => (
+              <label class="field" for={f.id}>
+                <span class="field__label">{f.label}</span>
+                <input
+                  class="field__input"
+                  id={f.id}
+                  name={f.name}
+                  type={f.type}
+                  inputmode={f.type === 'email' ? 'email' : undefined}
+                  autocomplete={f.autocomplete}
+                  required={f.required}
+                  placeholder={f.placeholder}
+                />
+              </label>
+            ))}
+          </div>
+
+          <label class="field field--wide" for="f-msg">
+            <span class="field__label">What do you need?</span>
+            <textarea
+              class="field__input field__input--area"
+              id="f-msg"
+              name="msg"
+              placeholder="e.g. approx. volume per season, ball type, custom logo, timeline…"></textarea>
+          </label>
+
+          <div class="panel__error" id="enqErr" role="alert" hidden></div>
+
+          <button class="btn btn--pop panel__submit" id="enqSubmit" type="submit">Send enquiry →</button>
+        </form>
+      </div>
+
+      <div class="panel__done" id="enqDone" role="status" hidden>
+        <div class="panel__tick" aria-hidden="true">✓</div>
+        <h3 class="panel__doneTitle">Enquiry received.</h3>
+        <p class="panel__doneBody">
+          Thanks <span id="doneName"></span> — we've noted your details and a named member of the
+          team will be in touch within one working day.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .enquiry { padding-top: 82px; padding-bottom: 82px; }
+
+  .enquiry__grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 52px;
+    align-items: center;
+  }
+
+  .enquiry__eyebrow { margin: 0 0 14px; }
+
+  .enquiry__title { font-size: 48px; letter-spacing: -0.035em; line-height: 1; margin-bottom: 16px; }
+
+  .enquiry__body {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 38ch;
+  }
+
+  .panel { background: var(--ink); border-radius: 18px; padding: 32px; }
+
+  .panel__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+  .field { display: block; }
+  .field--wide { margin-top: 15px; }
+
+  .field__label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 7px;
+  }
+
+  .field__input {
+    width: 100%;
+    font-size: 14px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--lined);
+    border-radius: 9px;
+    padding: 12px 13px;
+    outline: none;
+    transition: 0.15s;
+  }
+
+  .field__input::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+  .field__input:focus {
+    border-color: var(--pop);
+    box-shadow: 0 0 0 3px rgba(228, 255, 0, 0.25);
+  }
+
+  .field__input--area { min-height: 88px; resize: vertical; }
+
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+  .panel__error {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--pop);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 13px;
+  }
+
+  .panel__submit { width: 100%; margin-top: 16px; padding: 14px 22px; }
+  .panel__submit[disabled] { opacity: 0.6; cursor: progress; }
+
+  .panel__done { padding: 14px 6px 10px; }
+
+  .panel__tick {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--pop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--pop-text);
+  }
+
+  .panel__doneTitle { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 10px; color: #fff; }
+
+  .panel__doneBody { font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.7); margin: 0; }
+
+  @media (max-width: 900px) {
+    .enquiry__grid { grid-template-columns: 1fr; gap: 28px; }
+    .enquiry__title { font-size: 34px; }
+    .panel__fields { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('enqForm') as HTMLFormElement | null;
+  if (form) {
+    const live = document.getElementById('enqLive')!;
+    const done = document.getElementById('enqDone')!;
+    const err = document.getElementById('enqErr')!;
+    const btn = document.getElementById('enqSubmit') as HTMLButtonElement;
+    const label = btn.textContent ?? '';
+    const endpoint = form.dataset.endpoint ?? '';
+    const email = form.dataset.email ?? '';
+
+    const val = (n: string) => ((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim();
+
+    const fail = (message: string, focus?: string) => {
+      err.textContent = message;
+      err.hidden = false;
+      if (focus) (form.elements.namedItem(focus) as HTMLElement | null)?.focus();
+    };
+
+    const busy = (on: boolean) => {
+      btn.disabled = on;
+      btn.textContent = on ? 'Sending…' : label;
+    };
+
+    // Clicking a ball type in the range table carries its name into the message.
+    document.querySelectorAll<HTMLElement>('[data-ball]').forEach((row) => {
+      row.addEventListener('click', () => {
+        const msg = form.elements.namedItem('msg') as HTMLTextAreaElement | null;
+        if (msg && !msg.value) msg.value = `Interested in: ${row.dataset.ball}. `;
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      const name = val('name');
+      const org = val('org');
+      const address = val('email');
+
+      if (!name) return e.preventDefault(), fail('Please add your name so we know who we’re talking to.', 'name');
+      if (!org) return e.preventDefault(), fail('Let us know which range or course you’re with.', 'org');
+      if (!/.+@.+\..+/.test(address)) return e.preventDefault(), fail('A valid email means we can actually reply.', 'email');
+
+      err.hidden = true;
+
+      // No AJAX endpoint configured: let the browser POST the form natively.
+      if (!endpoint) return;
+
+      e.preventDefault();
+      busy(true);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name,
+          org,
+          country: val('country'),
+          email: address,
+          msg: val('msg'),
+          _subject: 'New RangeBallsDirect enquiry',
+          _template: 'table',
+        }),
+      })
+        .then((r) => {
+          if (!r.ok) throw new Error(String(r.status));
+          document.getElementById('doneName')!.textContent = name;
+          live.hidden = true;
+          done.hidden = false;
+          done.setAttribute('tabindex', '-1');
+          (done as HTMLElement).focus();
+        })
+        .catch(() => {
+          busy(false);
+          fail(`That didn’t send — please email ${email} and we’ll pick it up straight away.`);
+        });
+    });
+  }
+</script>
