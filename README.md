@@ -2,7 +2,7 @@
 
 Marketing site for RangeBallsDirect — range balls sourced direct from vetted factories in mainland China, imported and delivered to driving ranges and golf courses across Europe.
 
-Astro, static output, no client framework. One page plus a 404. Deploys to GitHub Pages on every push to `main`.
+Astro, static output, no client framework. One page plus a 404. Hosted on Vercel at [rangeballsdirect.com](https://rangeballsdirect.com), deployed from `main`.
 
 ```bash
 npm install
@@ -25,7 +25,7 @@ src/
     404.astro
     robots.txt.ts      generated so the sitemap URL follows the deploy target
   styles/global.css    design tokens, section rhythm, buttons, skip link
-public/                og.png, apple-touch-icon.png, .nojekyll
+public/                og.png, apple-touch-icon.png
 test/verify.mjs        44-check end-to-end suite
 ```
 
@@ -33,25 +33,25 @@ test/verify.mjs        44-check end-to-end suite
 
 ## Deploy
 
-1. Create an empty repo on GitHub (no README, no `.gitignore`).
-2. Push:
+Vercel builds from `main` on every push. Nothing to configure per deploy:
+
+| Setting | Value | Why |
+|---|---|---|
+| Framework preset | Astro | auto-detected |
+| Build command | `npm run build` | type-checks, then builds |
+| Output directory | `dist` | Astro's static output |
+| Install command | `npm ci` | devDependencies are needed — `astro check` lives there |
+
+`SITE_URL` and `BASE_PATH` are deliberately **unset** on Vercel. Their defaults are `https://rangeballsdirect.com` and `/`, which is exactly right for the production domain, so canonical, `og:image`, `robots.txt` and the sitemap all resolve correctly with no environment configuration.
+
+`npm run build` runs `astro check` first, so a type error fails the deploy rather than shipping. That is intentional.
+
+**GitHub Pages must stay off.** The site would otherwise exist at two origins and compete with itself in search. `.github/workflows/ci.yml` is a quality gate only and never publishes.
+
+### Deploying somewhere else, or under a sub-path
 
 ```bash
-cd /c/dev/rangeballsdirect && git remote add origin https://github.com/<owner>/<repo>.git && git push -u origin main
-```
-
-3. In the repo: **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-
-The workflow type-checks, runs the suite, then builds and publishes. `SITE_URL` and `BASE_PATH` come from `actions/configure-pages`, so the same commit is correct on `https://<owner>.github.io/<repo>/` or on a custom domain — canonical, OG image, sitemap and asset paths all follow. Nothing to edit when the domain changes.
-
-### Custom domain
-
-Add a `CNAME` file to `public/` containing the domain, point DNS at GitHub Pages, then set the domain under Settings → Pages.
-
-### Building for a sub-path locally
-
-```bash
-SITE_URL=https://acme.github.io BASE_PATH=/rangeballsdirect npm run build
+SITE_URL=https://acme.example.com BASE_PATH=/rangeballs npm run build
 ```
 
 ## Before it goes live — two things
