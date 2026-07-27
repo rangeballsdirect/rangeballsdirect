@@ -32,10 +32,21 @@ a { color: inherit; }
 img, svg { max-width: 100%; height: auto; }
 input, textarea, button { font-family: inherit; }
 
-.site { max-width: 1180px; margin: 0 auto; }
+/*
+ * Bands run full-bleed so a background or rule reaches both edges of the
+ * viewport; .wrap holds the measure. Anything with a background of its own must
+ * be the band, with a .wrap inside it — never the other way round, or the
+ * colour stops short of the edge on a wide display.
+ */
+.wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
 
-/* Section rhythm. Every band shares the same horizontal gutter. */
-.band { padding: 80px var(--pad); }
+/* Section rhythm. Vertical only — .wrap owns the gutter. */
+.band { padding-block: 80px; }
 
 .eyebrow {
   font-size: 12.5px;

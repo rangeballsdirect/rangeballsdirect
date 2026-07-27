@@ -16,6 +16,7 @@ import { createServer } from 'node:http';
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const DIST = join(ROOT, 'dist');
 const WANT_SHOTS = process.argv.includes('--shots');
+const EMAIL = 'carl@rangeballsdirect.com';
 const SHOT = join(ROOT, 'test', 'shots');
 if (WANT_SHOTS) mkdirSync(SHOT, { recursive: true });
 
@@ -101,20 +102,18 @@ for (const [w, h, tag] of [[1280, 900, 'desktop'], [375, 812, 'mobile']]) {
   const enq = await cols('.enquiry__grid');
   const qcRow = await page.$eval('.card--feature', el => getComputedStyle(el).gridRowStart);
   const proc = await cols('.process__grid');
-  const formGrid = await cols('.panel__fields');
-  const rowCols = await cols('a[data-ball]');
+  const rowCols = await cols('.row');
 
   if (tag === 'mobile') {
     ok(hero === 1, `mobile: hero collapses to 1 col (got ${hero})`);
     ok(enq === 1, `mobile: enquiry section collapses to 1 col (got ${enq})`);
-    ok(formGrid === 1, `mobile: form fields collapse to 1 col (got ${formGrid})`);
     ok(qcRow === 'auto', `mobile: qc feature card grid-row reset to auto (got ${qcRow})`);
     ok(proc === 2, `mobile: process row is 2 col (got ${proc})`);
     ok(rowCols === 3, `mobile: range rows are 3 col (got ${rowCols})`);
     const descVisible = await page.$eval('.row__blurb', el => getComputedStyle(el).display);
     ok(descVisible === 'none', `mobile: range row description hidden (got ${descVisible})`);
     // hovered range row must not overflow
-    await page.hover('a[data-ball]');
+    await page.hover('.row');
     await page.waitForTimeout(300);
     const sw2 = await page.evaluate(() => document.documentElement.scrollWidth);
     ok(sw2 <= w, `mobile: no overflow while a range row is hovered (${sw2})`);
@@ -140,62 +139,33 @@ for (const [w, h, tag] of [[1280, 900, 'desktop'], [375, 812, 'mobile']]) {
   await page.close();
 }
 
-// --- behaviour: form ---
-console.log('\n=== form behaviour ===');
+// --- contact route ---
+// There is no form until there is somewhere for it to post. A form that
+// silently swallows enquiries loses business; email does not.
+console.log('\n=== contact ===');
 {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(URL, { waitUntil: 'load' });
-  let posted = null;
-  await page.route('https://formsubmit.co/**', async route => {
-    posted = route.request().postDataJSON();
-    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":"true"}' });
-  });
 
-  // validation gates
-  await page.click('#enqSubmit');
-  ok(await page.isVisible('#enqErr'), 'empty submit shows an error');
-  ok((await page.textContent('#enqErr')).includes('name'), 'first error names the missing field');
-  ok(await page.evaluate(() => document.activeElement.id) === 'f-name', 'focus moves to the offending field');
+  ok(await page.$('form') === null, 'no form is shipped while there is nowhere to post');
+  ok(await page.$('input, textarea') === null, 'no orphan inputs left behind');
 
-  await page.fill('#f-name', 'Jane Doe');
-  await page.click('#enqSubmit');
-  ok((await page.textContent('#enqErr')).includes('range or course'), 'second gate: org required');
+  const links = await page.$$eval('a[href^="mailto:"]', els => els.map(a => a.getAttribute('href')));
+  ok(links.length >= 2, `enquiry panel and footer both offer email (found ${links.length})`);
+  ok(links.every(h => h.startsWith(`mailto:${EMAIL}`)), `every mailto targets ${EMAIL}: ${JSON.stringify(links)}`);
 
-  await page.fill('#f-org', 'Fairway Driving Range');
-  await page.fill('#f-email', 'not-an-email');
-  await page.click('#enqSubmit');
-  ok((await page.textContent('#enqErr')).includes('valid email'), 'third gate: email must be valid');
+  const prefilled = links.find(h => h.includes('subject='));
+  ok(!!prefilled, 'the enquiry CTA prefills a subject line');
+  ok(!!prefilled && decodeURIComponent(prefilled).includes('Range or course:'),
+     'the enquiry CTA prefills the details a useful enquiry needs');
 
-  // range-row prefill
-  await page.click('a[data-ball="Floater"]');
-  ok((await page.inputValue('#f-msg')).includes('Floater'), 'clicking a ball type prefills the message');
+  const shown = (await page.textContent('.panel__address')).trim();
+  ok(shown === EMAIL, `the address is also shown as readable text (got ${shown})`);
 
-  await page.fill('#f-email', 'jane@fairway.com');
-  await page.fill('#f-country', 'Germany');
-  await page.click('#enqSubmit');
-  await page.waitForSelector('#enqDone', { state: 'visible', timeout: 5000 });
-  ok(!!posted, 'submit POSTs to the endpoint');
-  ok(posted && posted.name === 'Jane Doe' && posted.email === 'jane@fairway.com' && posted.country === 'Germany'
-     && posted.msg.includes('Floater'), 'payload carries every field ' + JSON.stringify(posted));
-  ok(await page.isHidden('#enqLive'), 'form hides on success');
-  ok((await page.textContent('#doneName')) === 'Jane Doe', 'success panel greets by name');
-  await page.close();
-}
-
-// --- behaviour: network failure falls back to the email address ---
-{
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-  await page.goto(URL, { waitUntil: 'load' });
-  await page.route('https://formsubmit.co/**', r => r.abort());
-  await page.fill('#f-name', 'Jane');
-  await page.fill('#f-org', 'Fairway');
-  await page.fill('#f-email', 'jane@fairway.com');
-  await page.click('#enqSubmit');
-  await page.waitForTimeout(600);
-  const msg = await page.textContent('#enqErr');
-  ok(msg.includes('hello@rangeballsdirect.com'), 'network failure surfaces the mailto fallback');
-  ok(await page.isEnabled('#enqSubmit'), 'button is re-enabled after a failure');
-  ok((await page.textContent('#enqSubmit')).includes('Send enquiry'), 'button label restored after a failure');
+  // Nothing may still point at a retired address.
+  const found = await page.evaluate(() => document.body.innerHTML.match(/[\w.+-]+@rangeballsdirect\.com/g) ?? []);
+  const unique = [...new Set(found)];
+  ok(unique.every(a => a === EMAIL), `no stale address anywhere: ${JSON.stringify(unique)}`);
   await page.close();
 }
 
@@ -215,10 +185,6 @@ console.log('\n=== links & metadata ===');
   const h = await page.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(e => +e.tagName[1]));
   let skips = []; for (let i = 1; i < h.length; i++) if (h[i] - h[i - 1] > 1) skips.push(h[i - 1] + '->' + h[i]);
   ok(skips.length === 0, `no heading-level skips ${JSON.stringify(skips)} seq=${h.join(',')}`);
-  const unlabelled = await page.evaluate(() => [...document.querySelectorAll('input:not([type=hidden]):not(.hp),textarea')]
-    .filter(el => !el.labels || el.labels.length === 0).map(el => el.name));
-  ok(unlabelled.length === 0, `every field has a label ${JSON.stringify(unlabelled)}`);
-
   // "Enquire →" sits on the bone background at rest — it must stay legible there.
   const ratio = await page.$eval('.row__cta', el => {
     const rgb = s => s.match(/[\d.]+/g).map(Number);
@@ -234,6 +200,39 @@ console.log('\n=== links & metadata ===');
     return Math.round(((l1 + .05) / (l2 + .05)) * 100) / 100;
   });
   ok(ratio >= 4.5, `"Enquire →" meets 4.5:1 against its background at rest (got ${ratio}:1)`);
+  await page.close();
+}
+
+// --- full-bleed bands on a wide display ---
+// The design's 1180px wrapper sat outside the coloured bands, so on anything
+// wider the dark header, process strip and footer stopped short with white
+// gutters either side. Backgrounds must reach both edges; the measure must not.
+console.log('\n=== full bleed ===');
+for (const w of [1920, 1440]) {
+  const page = await browser.newPage({ viewport: { width: w, height: 900 } });
+  await page.goto(URL, { waitUntil: 'load' });
+
+  const bands = await page.evaluate(() =>
+    ['.masthead', '#delivery', '#range', 'footer'].map(sel => {
+      const el = document.querySelector(sel);
+      const r = el.getBoundingClientRect();
+      return { sel, left: Math.round(r.left), right: Math.round(r.right) };
+    }));
+
+  for (const b of bands)
+    ok(b.left <= 0 && b.right >= w,
+       `${w}px: ${b.sel} reaches both edges (left ${b.left}, right ${b.right} vs ${w})`);
+
+  // ...while the content inside stays on the 1180px measure.
+  const wraps = await page.evaluate(() =>
+    [...document.querySelectorAll('.wrap')].map(el => Math.round(el.getBoundingClientRect().width)));
+  ok(wraps.length > 0 && wraps.every(x => x === 1180),
+     `${w}px: every .wrap holds the 1180px measure ${JSON.stringify([...new Set(wraps)])}`);
+
+  const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+  ok(sw <= w, `${w}px: no horizontal overflow (${sw})`);
+
+  if (WANT_SHOTS) await page.screenshot({ path: join(SHOT, `wide-${w}.png`), clip: { x: 0, y: 0, width: w, height: 800 } });
   await page.close();
 }
 

@@ -3,6 +3,7 @@ import { balls } from '../data/balls';
 ---
 
 <section class="range band" id="range">
+  <div class="wrap">
   <header class="range__head">
     <p class="eyebrow">The range</p>
     <h2 class="h2">A ball for every tee line</h2>
@@ -10,7 +11,7 @@ import { balls } from '../data/balls';
 
   <div class="range__rows">
     {balls.map((ball, i) => (
-      <a class="row" href="#enquiry" data-ball={ball.name}>
+      <a class="row" href="#enquiry">
         <span class="row__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
         <span class="row__name">{ball.name}</span>
         <span class="row__blurb">{ball.blurb}</span>
@@ -18,13 +19,13 @@ import { balls } from '../data/balls';
       </a>
     ))}
   </div>
+  </div>
 </section>
 
 <style>
   .range {
     background: var(--bone);
-    padding-top: 76px;
-    padding-bottom: 76px;
+    padding-block: 76px;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }

@@ -1,7 +1,6 @@
 /**
  * The range. Adding, removing or reordering a ball is a data edit here —
- * `BallRange.astro` renders whatever this array contains and the enquiry form
- * picks the name up from the row's `data-ball` attribute.
+ * `BallRange.astro` renders whatever this array contains, numbering included.
  */
 export interface Ball {
   name: string;

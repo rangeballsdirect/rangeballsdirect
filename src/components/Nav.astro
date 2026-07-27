@@ -3,21 +3,24 @@ import Wordmark from './Wordmark.astro';
 import { nav } from '../data/site';
 ---
 
-<nav class="nav" aria-label="Primary">
-  <Wordmark />
-  <div class="nav__links">
-    {nav.map(({ label, href }) => <a href={href}>{label}</a>)}
-  </div>
-  <a class="btn btn--pop btn--sm" href="#enquiry">Make an enquiry</a>
-</nav>
+<div class="navband">
+  <nav class="nav wrap" aria-label="Primary">
+    <Wordmark />
+    <div class="nav__links">
+      {nav.map(({ label, href }) => <a href={href}>{label}</a>)}
+    </div>
+    <a class="btn btn--pop btn--sm" href="#enquiry">Make an enquiry</a>
+  </nav>
+</div>
 
 <style>
+  .navband { border-bottom: 1px solid var(--lined); }
+
   .nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px var(--pad);
-    border-bottom: 1px solid var(--lined);
+    padding-block: 20px;
   }
 
   .nav__links {

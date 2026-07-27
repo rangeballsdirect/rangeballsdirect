@@ -5,14 +5,9 @@ export const site = {
   tagline: 'Range balls sourced direct. Inspected in person, delivered across Europe.',
   description:
     'We vet golf ball factories in mainland China in person, then import and deliver range balls to driving ranges and golf courses across Europe.',
-  email: 'hello@rangeballsdirect.com',
-  /**
-   * Where the enquiry form posts. FormSubmit needs no account or key, but stays
-   * inert until someone at `email` clicks its one-time activation link.
-   * Swap for a Formspree URL, serverless function or CRM webhook as needed.
-   */
-  formEndpoint: 'https://formsubmit.co/hello@rangeballsdirect.com',
-  formEndpointAjax: 'https://formsubmit.co/ajax/hello@rangeballsdirect.com',
+  email: 'carl@rangeballsdirect.com',
+  /** Prefills the subject line of the enquiry mailto. */
+  enquirySubject: 'Range ball enquiry',
 };
 
 export const nav = [

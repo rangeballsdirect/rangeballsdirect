@@ -5,16 +5,18 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="foot">
-  <div class="foot__top">
-    <Wordmark />
-    <nav class="foot__links" aria-label="Footer">
-      {nav.map(({ label, href }) => <a href={href}>{label}</a>)}
-      <a class="foot__cta" href="#enquiry">Make an enquiry →</a>
-    </nav>
-  </div>
-  <div class="foot__legal">
-    <span>© {year} {site.name}</span>
-    <a href={`mailto:${site.email}`}>{site.email}</a>
+  <div class="wrap">
+    <div class="foot__top">
+      <Wordmark />
+      <nav class="foot__links" aria-label="Footer">
+        {nav.map(({ label, href }) => <a href={href}>{label}</a>)}
+        <a class="foot__cta" href="#enquiry">Make an enquiry →</a>
+      </nav>
+    </div>
+    <div class="foot__legal">
+      <span>© {year} {site.name}</span>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
   </div>
 </footer>
 
@@ -22,7 +24,7 @@ const year = new Date().getFullYear();
   .foot {
     background: var(--ink);
     color: rgba(255, 255, 255, 0.7);
-    padding: 52px var(--pad) 38px;
+    padding-block: 52px 38px;
     border-top: 1px solid var(--lined);
   }
 

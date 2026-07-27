@@ -3,7 +3,7 @@ import { hero } from '../data/site';
 const [line1, line2] = hero.headline;
 ---
 
-<section class="hero" id="main">
+<section class="hero wrap" id="main">
   <div>
     <p class="hero__eyebrow">{hero.eyebrow}</p>
     <h1 class="hero__title">{line1}<br />{line2}<span class="hero__stop">.</span></h1>
@@ -30,7 +30,7 @@ const [line1, line2] = hero.headline;
     grid-template-columns: 1.14fr 0.86fr;
     gap: 48px;
     align-items: center;
-    padding: 84px var(--pad) 80px;
+    padding-block: 84px 80px;
   }
 
   .hero__eyebrow {

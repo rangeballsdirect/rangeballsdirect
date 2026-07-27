@@ -16,7 +16,7 @@ npm test         # build, then run the end-to-end suite
 ```
 src/
   data/
-    site.ts            brand, nav, hero copy, countries, process steps, form endpoint
+    site.ts            brand, nav, hero copy, countries, process steps, contact address
     balls.ts           the range — one entry per ball type
   layouts/Base.astro   <head>, meta, canonical, OG, JSON-LD, skip link
   components/          Nav, Hero, CountryStrip, WhyUs, BallRange, Process, Enquiry, SiteFooter, Wordmark
@@ -24,12 +24,14 @@ src/
     index.astro        composes the section components in order
     404.astro
     robots.txt.ts      generated so the sitemap URL follows the deploy target
-  styles/global.css    design tokens, section rhythm, buttons, skip link
+  styles/global.css    design tokens, .wrap measure, section rhythm, buttons, skip link
 public/                og.png, apple-touch-icon.png
-test/verify.mjs        44-check end-to-end suite
+test/verify.mjs        55-check end-to-end suite
 ```
 
-**Content is data, not markup.** Adding, removing or reordering a ball type is an edit to `src/data/balls.ts` — the row markup, the numbering and the enquiry-form prefill all follow. Same for nav items, served countries and process steps in `src/data/site.ts`. Nothing about the range is hand-written in a template.
+**Content is data, not markup.** Adding, removing or reordering a ball type is an edit to `src/data/balls.ts` — the row markup and the numbering follow. Same for nav items, served countries, process steps and the contact address in `src/data/site.ts`. Nothing about the range is hand-written in a template.
+
+**Bands are full-bleed; `.wrap` holds the measure.** Any element with a background or a rule must be the band, with a `.wrap` inside it — never the reverse. Put the max-width on the outer element and the colour stops short of the screen edge on a wide display, which is exactly how the header and footer ended up looking cut off. The suite asserts this at 1920px and 1440px.
 
 ## Deploy
 
@@ -54,13 +56,21 @@ Vercel builds from `main` on every push. Nothing to configure per deploy:
 SITE_URL=https://acme.example.com BASE_PATH=/rangeballs npm run build
 ```
 
-## Before it goes live — two things
+## Contact
 
-**1. The enquiry form.** It posts to [FormSubmit](https://formsubmit.co) at the address in `src/data/site.ts` — no account, no key. It stays inert until someone at that address clicks the one-time activation email FormSubmit sends on the first submission. Send one test enquiry from the live site, activate, done.
+Enquiries go to **carl@rangeballsdirect.com** — set once in `src/data/site.ts` and used by the enquiry panel, the footer and the Organization JSON-LD. Change it there and everything follows; the suite fails if any other `@rangeballsdirect.com` address survives anywhere in the markup.
 
-To point it elsewhere (Formspree, a serverless function, a CRM webhook), change `formEndpoint` and `formEndpointAjax` in `src/data/site.ts`. `formEndpoint` is the `action` used when JS is off; `formEndpointAjax` takes the JSON `fetch`. Set `formEndpointAjax` to `''` to disable the fetch and let the native POST handle everything.
+**There is no form, deliberately.** A form needs somewhere to post, and a form that silently swallows enquiries loses business that email would have won. So the enquiry panel is a `mailto:` with the subject line and a short template prefilled — range, country, ball type, season volume — which gets a more useful first message than an empty textarea would.
 
-**2. The factory photograph.** The hatched box captioned *Factory floor — Qingdao* in `WhyUs.astro` is a placeholder. Replace it with:
+To bring the form back once there's a working endpoint, the full version — validation, honeypot, busy state, error fallback, no-JS native POST — is in git:
+
+```bash
+git show fc5a2be:src/components/Enquiry.astro
+```
+
+## Outstanding
+
+**The factory photograph.** The hatched box captioned *Factory floor — Qingdao* in `WhyUs.astro` is a placeholder. Replace it with:
 
 ```astro
 <img src="/factory-floor.jpg" alt="…" class="card__media" style="object-fit:cover;width:100%" />
@@ -77,11 +87,10 @@ Serves `dist/` over HTTP and drives real Chromium at 1280px and 375px:
 
 - no horizontal overflow and no element past the viewport edge at either width — including while a range row is hovered and expanding its padding
 - every grid collapses correctly on mobile and stays expanded on desktop
-- every tap target clears 32px; every field has a label; no heading-level skips
-- the enquiry form's three validation gates fire in order and move focus to the offending field
-- a successful submit POSTs every field and swaps in the success panel
-- a failed submit restores the button and surfaces the mailto fallback
-- clicking a ball type prefills the message
+- every tap target clears 32px; no heading-level skips
+- at 1920px and 1440px, every coloured band reaches both screen edges while every `.wrap` holds the 1180px measure
+- no `<form>` and no orphan inputs are shipped; the enquiry panel and footer both offer email
+- every `mailto:` targets the address in `site.ts`, the CTA prefills a subject and template, and no stale address survives anywhere in the markup
 - every in-page anchor resolves; the JSON-LD parses; canonical and `og:image` are present
 - "Enquire →" clears 4.5:1 contrast against the bone background at rest
 - an unknown path returns a real 404 that is noindex, offers a route home and does not overflow
@@ -91,16 +100,16 @@ Serves `dist/` over HTTP and drives real Chromium at 1280px and 375px:
 
 ## What changed from the design file
 
-The design was implemented as-is — layout, type, colour and copy are unchanged. A full-page pixel diff against the design's own rendering is **zero pixels at 1280px**; the only difference at 375px is the footer link row, noted below.
+Layout, type, colour and copy follow the design. At the point of the Astro rewrite a full-page pixel diff against the design's own rendering was **zero pixels at 1280px**. Deliberate divergences since:
 
-Production work layered on top:
-
+- **Full-bleed bands.** The design put its 1180px wrapper *outside* the coloured bands, so above 1180px the dark header, the bone range strip, the process band and the footer all stopped short with white gutters either side — at 1920px, 370px of white on each edge. Backgrounds now reach the viewport edges; the content still sits on the 1180px measure, so nothing below 1180px changed.
+- **No enquiry form.** See *Contact* above.
 - **Mobile layout.** The design's media query only collapsed `section > div` grids, so the hero and enquiry sections stayed two-column at 375px and the quality-control feature card kept `grid-row: 1 / 3`, leaving a hole. Both fixed, plus a two-column process row, a wrapping nav, 32px+ tap targets, tighter headings below 420px and an `overflow-x` guard.
-- **A real form.** Was a click handler on a `<button type="button">` with a `// TODO: POST` comment — no `<form>`, so no Enter-key submit and nothing to post. Now a genuine form with `required`, `type="email"`, `autocomplete`, a honeypot, a busy state, a network error path that falls back to the mailto address, and a native POST when JS is off.
-- **Accessibility.** Skip link, `for`/`id` label pairing, `role="alert"` on the error, `role="status"` plus a focus move on success, `aria-hidden` on decorative marks, `aria-label` on both navs, `h4` → `h3` to close a heading-level skip, `:focus-visible` rings, `prefers-reduced-motion`.
 - **Contrast.** "Enquire →" was `#e4ff00` on `#f2f2ef` — 1.1:1, invisible until the row inverted on hover. Now 5.4:1 at rest and yellow on hover, where the row is dark.
-- **Footer nav.** The design's `.site nav { padding-left: 22px }` mobile rule matched the footer's `<nav>` as well as the header's, indenting the footer links by a double gutter and squeezing their gap from 26px to 14px. Scoped styles fix it; this is the one intentional visual difference at 375px.
+- **Footer nav.** The design's `.site nav { padding-left: 22px }` mobile rule matched the footer's `<nav>` as well as the header's, indenting the footer links by a double gutter and squeezing their gap from 26px to 14px. Scoped styles fix it.
+- **Accessibility.** Skip link, `aria-hidden` on decorative marks, `aria-label` on both navs, `h4` → `h3` to close a heading-level skip, `:focus-visible` rings, `prefers-reduced-motion`.
 - **SEO and social.** Canonical, `og:url`/`og:image`, `twitter:card`, `theme-color`, Organization JSON-LD listing the eight served countries, generated `robots.txt`, `sitemap-index.xml`, a rendered 1200×630 `og.png` and a 180px touch icon.
-- **One interaction.** Clicking a ball type in the range table prefills the enquiry message with that ball's name.
 - **A 404 page** in the site's own visual language.
 - **A test suite**, so none of the above silently regresses.
+
+The page now ships **zero JavaScript** — the only `<script>` in the output is the JSON-LD block.

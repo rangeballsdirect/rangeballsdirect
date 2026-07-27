@@ -3,6 +3,7 @@ import { process } from '../data/site';
 ---
 
 <section class="process band" id="delivery">
+  <div class="wrap">
   <h2 class="h2 process__title">From factory floor to tee line</h2>
   <ol class="process__grid">
     {process.map(({ step, title, note }) => (
@@ -13,10 +14,11 @@ import { process } from '../data/site';
       </li>
     ))}
   </ol>
+  </div>
 </section>
 
 <style>
-  .process { background: var(--ink); color: #fff; padding-top: 76px; padding-bottom: 76px; }
+  .process { background: var(--ink); color: #fff; padding-block: 76px; }
 
   /*
    * The one heading that carries default leading rather than the shared 1.02.

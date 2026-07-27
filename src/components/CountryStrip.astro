@@ -2,22 +2,25 @@
 import { countries } from '../data/site';
 ---
 
-<div class="strip">
-  <span class="strip__label">On the tee line in</span>
-  <div class="strip__list">
-    {countries.map((country, i) => (
-      <>
-        {i > 0 && <span aria-hidden="true">·</span>}
-        <span>{country}</span>
-      </>
-    ))}
+<div class="stripband">
+  <div class="strip wrap">
+    <span class="strip__label">On the tee line in</span>
+    <div class="strip__list">
+      {countries.map((country, i) => (
+        <>
+          {i > 0 && <span aria-hidden="true">·</span>}
+          <span>{country}</span>
+        </>
+      ))}
+    </div>
   </div>
 </div>
 
 <style>
+  .stripband { border-top: 1px solid var(--lined); }
+
   .strip {
-    border-top: 1px solid var(--lined);
-    padding: 17px var(--pad);
+    padding-block: 17px;
     display: flex;
     align-items: center;
     gap: 16px 30px;
