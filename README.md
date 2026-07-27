@@ -26,7 +26,7 @@ src/
     robots.txt.ts      generated so the sitemap URL follows the deploy target
   styles/global.css    design tokens, .wrap measure, section rhythm, buttons, skip link
 public/                og.png, apple-touch-icon.png
-test/verify.mjs        55-check end-to-end suite
+test/verify.mjs        64-check end-to-end suite
 ```
 
 **Content is data, not markup.** Adding, removing or reordering a ball type is an edit to `src/data/balls.ts` — the row markup and the numbering follow. Same for nav items, served countries, process steps and the contact address in `src/data/site.ts`. Nothing about the range is hand-written in a template.
@@ -67,6 +67,18 @@ To bring the form back once there's a working endpoint, the full version — val
 ```bash
 git show fc5a2be:src/components/Enquiry.astro
 ```
+
+## Agency credit
+
+The footer carries one outbound link — *Web design by Lucent Digital Studio* → `https://lucentdigital.co.uk/`, configured in `credit` in `src/data/site.ts`.
+
+Three deliberate choices, each asserted by the suite so they can't be undone by accident:
+
+- **Apex, not `www`.** `www.lucentdigital.co.uk` 308-redirects to the apex, and the apex is what that site declares as its own canonical. Linking straight there avoids a redirect hop.
+- **Followable.** `rel="noopener"` only — no `nofollow`, `sponsored` or `ugc`. It's an editorial credit, not paid placement, so it should pass equity.
+- **Branded anchor with a descriptor**, not exact-match keyword stuffing, which reads as manipulation to a search engine.
+
+It is the only outbound link on the site.
 
 ## Outstanding
 

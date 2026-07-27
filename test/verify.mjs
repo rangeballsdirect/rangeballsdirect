@@ -203,6 +203,40 @@ console.log('\n=== links & metadata ===');
   await page.close();
 }
 
+// --- the agency credit link ---
+// A backlink is only worth anything if it is followable, points at the
+// canonical URL and carries meaningful anchor text.
+console.log('\n=== credit link ===');
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(URL, { waitUntil: 'load' });
+
+  const link = await page.$eval('.foot__credit', el => ({
+    href: el.getAttribute('href'),
+    rel: el.getAttribute('rel') ?? '',
+    text: el.textContent.trim().replace(/\s+/g, ' '),
+    title: el.getAttribute('title') ?? '',
+    inFooter: !!el.closest('footer'),
+  })).catch(() => null);
+
+  ok(!!link, 'the credit link is present');
+  if (link) {
+    ok(link.inFooter, 'it sits in the footer');
+    ok(link.href === 'https://lucentdigital.co.uk/', `it points at the canonical URL (got ${link.href})`);
+    ok(!/^https?:\/\/www\./.test(link.href), 'it skips the www host, which 308-redirects');
+    ok(!/\b(nofollow|sponsored|ugc)\b/i.test(link.rel), `it is followable (rel="${link.rel}")`);
+    ok(link.text.includes('Lucent Digital Studio'), `anchor text names the brand (got "${link.text}")`);
+    ok(link.text.length > 'Lucent Digital Studio'.length, 'anchor text carries a descriptor, not just the brand');
+    ok(link.title.length > 0, 'it carries a title attribute');
+  }
+
+  // Nothing else on the page should be leaking outbound link equity.
+  const external = await page.$$eval('a[href^="http"]', els =>
+    els.map(a => a.getAttribute('href')).filter(h => !h.includes('rangeballsdirect')));
+  ok(external.length === 1, `it is the only outbound link ${JSON.stringify(external)}`);
+  await page.close();
+}
+
 // --- full-bleed bands on a wide display ---
 // The design's 1180px wrapper sat outside the coloured bands, so on anything
 // wider the dark header, process strip and footer stopped short with white

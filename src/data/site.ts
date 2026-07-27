@@ -10,6 +10,21 @@ export const site = {
   enquirySubject: 'Range ball enquiry',
 };
 
+/**
+ * Footer credit. The URL is the apex deliberately: www.lucentdigital.co.uk
+ * 308-redirects to it, and the apex is what that site declares as canonical,
+ * so linking straight there avoids a redirect hop.
+ *
+ * Anchor text is branded with a light descriptor. Do not add rel="nofollow" —
+ * the link is an editorial credit, not paid placement.
+ */
+export const credit = {
+  prefix: 'Web design by',
+  name: 'Lucent Digital Studio',
+  url: 'https://lucentdigital.co.uk/',
+  title: 'Lucent Digital Studio — web design, Leeds',
+};
+
 export const nav = [
   { label: 'The range', href: '#range' },
   { label: 'Quality control', href: '#quality' },

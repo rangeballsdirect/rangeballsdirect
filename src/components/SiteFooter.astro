@@ -1,6 +1,6 @@
 ---
 import Wordmark from './Wordmark.astro';
-import { nav, site } from '../data/site';
+import { nav, site, credit } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
@@ -15,7 +15,16 @@ const year = new Date().getFullYear();
     </div>
     <div class="foot__legal">
       <span>© {year} {site.name}</span>
-      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <div class="foot__meta">
+        <a
+          class="foot__credit"
+          href={credit.url}
+          title={credit.title}
+          target="_blank"
+          rel="noopener"
+        >{credit.prefix} <span class="foot__creditName">{credit.name}</span></a>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -63,7 +72,19 @@ const year = new Date().getFullYear();
 
   .foot__legal a { text-decoration: none; }
 
+  .foot__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px 26px;
+    flex-wrap: wrap;
+  }
+
+  .foot__credit { transition: 0.16s; }
+  .foot__creditName { color: rgba(255, 255, 255, 0.62); }
+  .foot__credit:hover, .foot__credit:hover .foot__creditName { color: var(--pop); }
+
   @media (max-width: 900px) {
     .foot__links a, .foot__legal a { padding: 11px 0; display: inline-block; }
+    .foot__meta { gap: 0 26px; }
   }
 </style>
