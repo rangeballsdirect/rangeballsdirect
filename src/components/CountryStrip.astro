@@ -1,15 +1,19 @@
 ---
-import { countries } from '../data/site';
+const countries = [
+  { name: 'Deutschland', flag: '🇩🇪' },
+  { name: 'Austria', flag: '🇦🇹' },
+  { name: 'Switzerland', flag: '🇨🇭' },
+];
 ---
 
 <div class="stripband">
   <div class="strip wrap">
     <span class="strip__label">On the tee line in</span>
     <div class="strip__list">
-      {countries.map((country, i) => (
+      {countries.map(({ name, flag }, i) => (
         <>
-          {i > 0 && <span aria-hidden="true">·</span>}
-          <span>{country}</span>
+          {i > 0 && <span aria-hidden="true">–</span>}
+          <span class="strip__country"><span class="strip__flag" aria-hidden="true">{flag}</span>{name}</span>
         </>
       ))}
     </div>
@@ -44,4 +48,12 @@ import { countries } from '../data/site';
     font-weight: 500;
     color: rgba(255, 255, 255, 0.6);
   }
+
+  .strip__country {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .strip__flag { font-size: 16px; line-height: 1; }
 </style>
