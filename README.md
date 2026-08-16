@@ -70,11 +70,11 @@ git show fc5a2be:src/components/Enquiry.astro
 
 ## Agency credit
 
-The footer carries one outbound link — *Web design by Lucent Digital Studio* → `https://lucentdigital.co.uk/`, configured in `credit` in `src/data/site.ts`.
+The footer carries one outbound link — *Web design by Lucent Digital Studio* → `https://www.lucentdigital.co.uk/`, configured in `credit` in `src/data/site.ts`.
 
 Three deliberate choices, each asserted by the suite so they can't be undone by accident:
 
-- **Apex, not `www`.** `www.lucentdigital.co.uk` 308-redirects to the apex, and the apex is what that site declares as its own canonical. Linking straight there avoids a redirect hop.
+- **Requested `www` URL.** The credit links directly to `https://www.lucentdigital.co.uk/`.
 - **Followable.** `rel="noopener"` only — no `nofollow`, `sponsored` or `ugc`. It's an editorial credit, not paid placement, so it should pass equity.
 - **Branded anchor with a descriptor**, not exact-match keyword stuffing, which reads as manipulation to a search engine.
 
