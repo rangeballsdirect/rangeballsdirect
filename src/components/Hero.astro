@@ -5,7 +5,6 @@ const [line1, line2] = hero.headline;
 
 <section class="hero wrap" id="main">
   <div>
-    <p class="hero__eyebrow">{hero.eyebrow}</p>
     <h1 class="hero__title">{line1}<br />{line2}<span class="hero__stop">.</span></h1>
     <p class="hero__body">{hero.body}</p>
     <div class="hero__actions">
@@ -31,15 +30,6 @@ const [line1, line2] = hero.headline;
     gap: 48px;
     align-items: center;
     padding-block: 84px 80px;
-  }
-
-  .hero__eyebrow {
-    font-size: 12.5px;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--pop);
-    margin: 0 0 24px;
   }
 
   .hero__title {
