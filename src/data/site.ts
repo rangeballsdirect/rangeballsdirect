@@ -29,7 +29,6 @@ export const nav = [
 ] as const;
 
 export const hero = {
-  eyebrow: 'Sourced in China · Inspected in person · Delivered in Europe',
   headline: ['Range balls,', 'sourced direct'] as const,
   body: 'We vet the factories in mainland China in person, then import and deliver to driving ranges and golf courses right across Europe. One contact. No guesswork.',
   stats: [
