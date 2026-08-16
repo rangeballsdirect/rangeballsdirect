@@ -222,8 +222,7 @@ console.log('\n=== credit link ===');
   ok(!!link, 'the credit link is present');
   if (link) {
     ok(link.inFooter, 'it sits in the footer');
-    ok(link.href === 'https://lucentdigital.co.uk/', `it points at the canonical URL (got ${link.href})`);
-    ok(!/^https?:\/\/www\./.test(link.href), 'it skips the www host, which 308-redirects');
+    ok(link.href === 'https://www.lucentdigital.co.uk/', `it points at the requested URL (got ${link.href})`);
     ok(!/\b(nofollow|sponsored|ugc)\b/i.test(link.rel), `it is followable (rel="${link.rel}")`);
     ok(link.text.includes('Lucent Digital Studio'), `anchor text names the brand (got "${link.text}")`);
     ok(link.text.length > 'Lucent Digital Studio'.length, 'anchor text carries a descriptor, not just the brand');
