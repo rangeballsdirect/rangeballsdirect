@@ -9,19 +9,15 @@ export interface Ball {
 
 export const balls: Ball[] = [
   {
-    name: 'Distance',
-    blurb: 'Hard-wearing 2-piece Surlyn — high-traffic tee lines & ball machines',
-  },
-  {
-    name: 'Tour Flight',
-    blurb: 'Softer feel and truer flight for premium ranges and coaching bays',
+    name: 'Distance Matters',
+    blurb: 'Every range is different — with restrictions on flight carry for shorter range facilities or optimum ball performance where space allows',
   },
   {
     name: 'Floater',
-    blurb: 'Buoyant construction for water ranges and floating-target retrieval',
+    blurb: 'Low density core with higher compression values.',
   },
   {
-    name: 'Hi-Vis Colour',
+    name: 'High Optic Yellow',
     blurb: 'High-visibility optic shades that hold up in low light and winter play',
   },
   {

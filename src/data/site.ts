@@ -22,7 +22,7 @@ export const credit = {
 };
 
 export const nav = [
-  { label: 'The range', href: '#range' },
+  { label: 'Your options', href: '#range' },
   { label: 'Quality control', href: '#quality' },
   { label: 'Delivery', href: '#delivery' },
   { label: 'About', href: '#enquiry' },
