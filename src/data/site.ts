@@ -29,7 +29,7 @@ export const nav = [
 ] as const;
 
 export const hero = {
-  headline: ['Range balls,', 'sourced direct'] as const,
+  headline: ['Our Range', 'Balls'] as const,
   body: 'We vet the factories in mainland China in person, then import and deliver to driving ranges and golf courses right across Europe. One contact. No guesswork.',
   stats: [
     { figure: 'In person', note: 'Every factory visited & vetted before we buy', accent: true },
