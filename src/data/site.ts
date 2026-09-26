@@ -30,7 +30,7 @@ export const nav = [
 
 export const hero = {
   headline: ['Our Range', 'Balls'] as const,
-  body: 'We vet the factories in mainland China in person, then import and deliver to driving ranges and golf courses right across Europe. One contact. No guesswork.',
+  body: "We've built strong relationships with multiple golf ball manufacturing plants worldwide, giving us reliable access to quality driving range balls, competitive pricing and consistent supply for our customers.",
   stats: [
     { figure: 'In person', note: 'Every factory visited & vetted before we buy', accent: true },
     { figure: '14 countries', note: 'Delivered across Europe, door to door' },
