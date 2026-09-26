@@ -1,11 +1,15 @@
 ---
 import Wordmark from './Wordmark.astro';
-import { nav } from '../data/site';
+import { nav, site } from '../data/site';
+const [chineseName, chineseDirect] = site.chineseNameParts;
 ---
 
 <div class="navband">
   <nav class="nav wrap" aria-label="Primary">
-    <Wordmark />
+    <div class="nav__brand">
+      <Wordmark />
+      <span class="nav__chinese" lang="zh-Hans">{chineseName}<span class="nav__chineseAccent">{chineseDirect}</span></span>
+    </div>
     <div class="nav__links">
       {nav.map(({ label, href }) => <a href={href}>{label}</a>)}
     </div>
@@ -22,6 +26,24 @@ import { nav } from '../data/site';
     justify-content: space-between;
     padding-block: 20px;
   }
+
+  .nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nav__chinese {
+    padding-left: 14px;
+    border-left: 1px solid var(--lined);
+    color: #fff;
+    font-family: 'PingFang SC', 'Microsoft YaHei', var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .nav__chineseAccent { color: var(--pop); }
 
   .nav__links {
     display: flex;
@@ -49,5 +71,16 @@ import { nav } from '../data/site';
 
     /* 18px of text is not a tap target. */
     .nav__links a { padding: 11px 0; display: inline-block; }
+  }
+
+  @media (max-width: 600px) {
+    .nav__brand { display: block; }
+    .nav__chinese {
+      display: block;
+      margin: 4px 0 0 22px;
+      padding-left: 0;
+      border-left: 0;
+      font-size: 11px;
+    }
   }
 </style>

@@ -1,5 +1,6 @@
 export const site = {
   name: 'RangeBallsDirect',
+  chineseNameParts: ['高尔夫练习球', '直供'] as const,
   /** Rendered as two-tone: `RangeBalls` in white, `Direct` in the accent. */
   nameParts: ['RangeBalls', 'Direct'] as const,
   tagline: 'Range balls sourced direct. Inspected in person, delivered across Europe.',
