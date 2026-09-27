@@ -26,7 +26,6 @@ export const nav = [
   { label: 'Your options', href: '#range' },
   { label: 'Quality control', href: '#quality' },
   { label: 'Delivery', href: '#delivery' },
-  { label: 'About', href: '#enquiry' },
 ] as const;
 
 export const hero = {
