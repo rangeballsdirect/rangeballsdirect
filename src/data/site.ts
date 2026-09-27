@@ -34,7 +34,7 @@ export const hero = {
   body: "We have built relationships with multiple golf ball manufacturing plants, giving us reliable access to quality driving range balls, competitive pricing and consistent supply for our customers.",
   stats: [
     { figure: 'Start to finish process', note: 'Every factory visited & vetted before we buy', accent: true },
-    { figure: '14 countries', note: 'Delivered across Europe, door to door' },
+    { figure: 'UK, Ireland & DACH', note: 'Deutschland, Austria and Switzerland' },
     { figure: '1 working day', note: 'Typical reply to a new enquiry' },
   ],
 };
