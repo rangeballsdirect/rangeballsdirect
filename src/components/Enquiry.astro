@@ -23,6 +23,16 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(site.enquirySu
         Tell us what your range needs. We'll reply within one working day with options,
         specifications and pricing — no obligation, and always a named contact.
       </p>
+      <div class="enquiry__member">
+        <img
+          src="/pga-members-crest-preview.png"
+          alt="The Professional Golfers’ Association crest"
+          width="96"
+          height="91"
+          loading="lazy"
+        />
+        <p>Carl is a member of The PGA.</p>
+      </div>
     </div>
 
     <div class="panel">
@@ -58,6 +68,22 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(site.enquirySu
     color: var(--muted);
     margin: 0;
     max-width: 38ch;
+  }
+
+  .enquiry__member {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .enquiry__member img { width: 96px; height: auto; flex: none; }
+
+  .enquiry__member p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
   }
 
   .panel { background: var(--ink); border-radius: 18px; padding: 36px 32px; }
