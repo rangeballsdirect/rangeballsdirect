@@ -14,10 +14,10 @@ const [line1, line2] = hero.headline;
   </div>
 
   <div class="hero__stats">
-    {hero.stats.map(({ figure, note, accent }) => (
+    {hero.stats.map(({ figure, note, formula, accent }) => (
       <div class="stat">
         <div class:list={['stat__figure', accent && 'stat__figure--accent']}>{figure}</div>
-        <div class="stat__note">{note}</div>
+        <div class="stat__note">{note} {formula && <span class="stat__formula">{formula}</span>}</div>
       </div>
     ))}
   </div>
@@ -84,6 +84,8 @@ const [line1, line2] = hero.headline;
     font-size: 13.5px;
     color: rgba(255, 255, 255, 0.68);
   }
+
+  .stat__formula { color: var(--pop); }
 
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: 28px; }
