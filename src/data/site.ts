@@ -50,9 +50,7 @@ export const countries = [
 ];
 
 export const process = [
-  { step: '01', title: 'Audit & select', note: 'We visit and vet candidate factories in China.' },
-  { step: '02', title: 'Approve spec', note: 'You sign off feel, flight, cover and print.' },
-  { step: '03', title: 'Inspect run', note: 'We check production before it leaves.' },
-  { step: '04', title: 'Import & clear', note: 'Freight and customs into Europe, by us.' },
-  { step: '05', title: 'Deliver', note: 'To your range or course, ready to play.' },
+  { step: '01', title: 'Order confirmed', note: 'We confirm your order and let you know what happens next.' },
+  { step: '02', title: 'Shipping updates', note: 'We keep you informed as your balls move from the factory to the export port, then travel port to port.' },
+  { step: '03', title: 'Delivered direct', note: 'After arrival and customs clearance, we arrange delivery straight to your range or course.' },
 ];
