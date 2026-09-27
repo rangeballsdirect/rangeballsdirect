@@ -14,10 +14,17 @@ const [line1, line2] = hero.headline;
   </div>
 
   <div class="hero__stats">
-    {hero.stats.map(({ figure, note, formula, accent }) => (
+    {hero.stats.map(({ figure, note, coreFormula, coverMaterials, accent }) => (
       <div class="stat">
         <div class:list={['stat__figure', accent && 'stat__figure--accent']}>{figure}</div>
-        <div class="stat__note">{note} {formula && <span class="stat__formula">{formula}</span>}</div>
+        <div class="stat__note">{note}</div>
+        {coreFormula && coverMaterials && (
+          <div class="stat__materials">
+            <div><span class="stat__material-label">Core</span> <span class="stat__formula">{coreFormula}</span></div>
+            <span class="stat__material-transition">to</span>
+            <div><span class="stat__material-label">Cover</span> <span class="stat__formula">{coverMaterials}</span></div>
+          </div>
+        )}
       </div>
     ))}
   </div>
@@ -84,6 +91,26 @@ const [line1, line2] = hero.headline;
     font-size: 13.5px;
     color: rgba(255, 255, 255, 0.68);
   }
+
+  .stat__materials {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-top: 7px;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .stat__materials > div { min-width: 0; overflow-wrap: break-word; }
+
+  .stat__material-label {
+    display: inline-block;
+    margin-right: 3px;
+    color: rgba(255, 255, 255, 0.68);
+    font-weight: 600;
+  }
+
+  .stat__material-transition { color: var(--pop); flex: none; }
 
   .stat__formula { color: var(--pop); }
 

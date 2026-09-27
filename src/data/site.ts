@@ -33,9 +33,15 @@ export const hero = {
   headline: ['Our Range Balls,', 'Our Networks'] as const,
   body: "We have built relationships with multiple golf ball manufacturing plants, giving us reliable access to quality driving range balls, competitive pricing and consistent supply for our customers.",
   stats: [
-    { figure: 'Start to finish process', note: "Before it's a ball, before it's a slug, it's chemistry:", formula: '(C₄H₆)ₙ, C₆H₆O₄Zn, ZnO and C₁₈H₂₂O₂.', accent: true },
-    { figure: 'UK, Ireland & DACH', note: 'Deutschland, Austria and Switzerland', formula: null },
-    { figure: '1 working day', note: 'Typical reply to a new enquiry', formula: null },
+    {
+      figure: 'The start',
+      note: "Before it's a ball, before it's a slug, it's chemistry.",
+      coreFormula: '(C₄H₆)ₙ, C₆H₆O₄Zn, ZnO and C₁₈H₂₂O₂',
+      coverMaterials: 'E/MAA–Zn/Na, TiO₂, BaSO₄ and HALS',
+      accent: true,
+    },
+    { figure: 'UK, Ireland & DACH', note: 'Deutschland, Austria and Switzerland', coreFormula: null, coverMaterials: null },
+    { figure: '1 working day', note: 'Typical reply to a new enquiry', coreFormula: null, coverMaterials: null },
   ],
 };
 
