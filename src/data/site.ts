@@ -31,9 +31,9 @@ export const nav = [
 
 export const hero = {
   headline: ['Our Range Balls,', 'Our Networks'] as const,
-  body: "We've built strong relationships with multiple golf ball manufacturing plants, giving us reliable access to quality driving range balls, competitive pricing and consistent supply for our customers.",
+  body: "We have built relationships with multiple golf ball manufacturing plants, giving us reliable access to quality driving range balls, competitive pricing and consistent supply for our customers.",
   stats: [
-    { figure: 'In person', note: 'Every factory visited & vetted before we buy', accent: true },
+    { figure: 'Start to finish process', note: 'Every factory visited & vetted before we buy', accent: true },
     { figure: '14 countries', note: 'Delivered across Europe, door to door' },
     { figure: '1 working day', note: 'Typical reply to a new enquiry' },
   ],
