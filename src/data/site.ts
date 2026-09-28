@@ -58,7 +58,7 @@ export const buying = {
     },
     {
       title: 'Payment & terms',
-      note: 'Payment options can be discussed as part of the proposal. Any arrangement depends on agreed terms, confirmed in writing before you commit.',
+      note: 'Payment options can be discussed as part of the proposal. Any arrangement depends on agreed terms.',
     },
   ],
 };
