@@ -10,7 +10,7 @@ export interface Ball {
 export const balls: Ball[] = [
   {
     name: 'Distance Matters',
-    blurb: 'Every range is different — with restrictions on flight carry for shorter range facilities or optimum ball performance where space allows',
+    blurb: 'Every range is different. Coefficient of restitution (COR) measures rebound at impact and is one factor in ball speed and distance. Shorter ranges may need controlled carry; longer ranges may have room for fuller flight.',
   },
   {
     name: 'Floater',
@@ -26,6 +26,6 @@ export const balls: Ball[] = [
   },
   {
     name: 'Limited Flight',
-    blurb: 'Restricted distance for compact ranges and shorter practice fields',
+    blurb: "Compact range? We dial down the rebound. A low-COR ball helps keep the flight inside the space you've got.",
   },
 ];

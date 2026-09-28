@@ -90,7 +90,9 @@ import { balls } from '../data/balls';
     /* Beats .row:hover, so a touch-held row cannot push the page sideways. */
     .row:hover { padding-left: 8px; padding-right: 8px; }
 
-    .row__blurb { display: none; }
+    .row__num { grid-row: 1 / 3; align-self: start; }
+    .row__blurb { grid-column: 2 / 4; grid-row: 2; line-height: 1.5; }
+    .row__cta { grid-column: 3; grid-row: 1; }
   }
 
   @media (max-width: 420px) {
