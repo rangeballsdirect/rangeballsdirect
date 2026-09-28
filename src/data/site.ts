@@ -25,7 +25,7 @@ export const credit = {
 export const nav = [
   { label: 'Your options', href: '#range' },
   { label: 'Quality control', href: '#quality' },
-  { label: 'Delivery', href: '#delivery' },
+  { label: 'Buying', href: '#delivery' },
 ] as const;
 
 export const hero = {
@@ -49,8 +49,17 @@ export const countries = [
   'Spain', 'Netherlands', 'Sweden', 'Denmark',
 ];
 
-export const process = [
-  { step: '01', title: 'Order confirmed', note: 'We confirm your order and let you know what happens next.' },
-  { step: '02', title: 'Shipping updates', note: 'We keep you informed as your balls move from the factory to the export port, then travel port to port.' },
-  { step: '03', title: 'Delivered direct', note: 'After arrival and customs clearance, we arrange delivery straight to your range or course.' },
-];
+export const buying = {
+  heading: 'Your range-ball partner',
+  intro: 'You deal directly with our PGA professional, who has spent 30 years working on driving ranges. Together, we look at the ball you need now, how you manage the balls already on your range and what the next order should look like.',
+  options: [
+    {
+      title: 'A ball procurement plan',
+      note: 'We can map out quantities, ball specification and replenishment over time, with branding and delivery timing built around how your range operates.',
+    },
+    {
+      title: 'Payment & terms',
+      note: 'Payment options can be discussed as part of the proposal. Any arrangement depends on agreed terms, confirmed in writing before you commit.',
+    },
+  ],
+};

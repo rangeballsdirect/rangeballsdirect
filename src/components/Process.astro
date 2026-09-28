@@ -1,92 +1,50 @@
 ---
-import { process } from '../data/site';
+import { buying } from '../data/site';
 ---
 
-<section class="process band" id="delivery">
+<section class="buying band" id="delivery">
   <div class="wrap">
-    <h2 class="h2 process__title">From your order to your range</h2>
-    <ol class="process__grid">
-      {process.map(({ step, title, note }) => (
-        <li class="step">
-          <div class="step__num" aria-hidden="true">{step}</div>
-          <h3 class="step__title">{title}</h3>
-          <p class="step__note">{note}</p>
-        </li>
+    <header class="buying__head">
+      <p class="eyebrow buying__eyebrow">Buying from us</p>
+      <h2 class="h2 buying__title">{buying.heading}</h2>
+      <p class="buying__intro">{buying.intro}</p>
+    </header>
+
+    <div class="buying__grid">
+      {buying.options.map(({ title, note }) => (
+        <article class="buying__card">
+          <h3 class="buying__card-title">{title}</h3>
+          <p class="buying__card-note">{note}</p>
+        </article>
       ))}
-    </ol>
+    </div>
   </div>
 </section>
 
 <style>
-  .process { background: var(--ink); color: #fff; padding-block: 76px; }
+  .buying { background: var(--ink); color: #fff; padding-block: 76px; }
 
-  /*
-   * The one heading that carries default leading rather than the shared 1.02.
-   * It is the only h2 that wraps to two lines on a phone, where 1.02 collides.
-   */
-  .process__title { font-size: 38px; line-height: normal; margin-bottom: 40px; color: #fff; }
+  .buying__head { max-width: 800px; margin-bottom: 34px; }
+  .buying__eyebrow { color: var(--pop); margin: 0 0 12px; }
+  .buying__title { font-size: 38px; line-height: 1.12; margin: 0 0 18px; color: #fff; }
+  .buying__intro { max-width: 66ch; margin: 0; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.72); }
 
-  .process__grid {
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .process__grid::before {
-    content: '';
-    position: absolute;
-    left: 27px;
-    top: 28px;
-    bottom: 28px;
-    width: 1px;
-    background: rgba(255, 255, 255, 0.24);
-  }
-
-  .step {
-    position: relative;
-    display: grid;
-    grid-template-columns: 56px minmax(170px, 0.7fr) minmax(0, 1fr);
-    align-items: center;
-    gap: 24px;
-    padding: 18px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-  }
-
-  .step:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.14); }
-
-  .step__num {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--pop);
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    line-height: 1;
-  }
-
-  .step__title { font-size: 19px; font-weight: 600; letter-spacing: normal; margin: 0; color: #fff; }
-
-  .step__note { max-width: 56ch; font-size: 15px; line-height: 1.55; color: rgba(255, 255, 255, 0.7); margin: 0; }
+  .buying__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .buying__card { border: 1px solid var(--lined); border-radius: 16px; padding: 28px; }
+  .buying__card-title { color: #fff; font-size: 23px; line-height: 1.15; margin: 0 0 14px; }
+  .buying__card-note { color: rgba(255, 255, 255, 0.7); font-size: 15px; line-height: 1.6; margin: 0; max-width: 52ch; }
 
   @media (max-width: 900px) {
-    .process__title { font-size: 30px; }
+    .buying__title { font-size: 30px; }
   }
 
   @media (max-width: 640px) {
-    .step { grid-template-columns: 56px minmax(0, 1fr); gap: 4px 18px; padding: 20px 0; }
-    .step__num { grid-row: span 2; }
-    .step__title { font-size: 17px; }
-    .step__note { grid-column: 2; font-size: 14px; }
+    .buying__grid { grid-template-columns: 1fr; }
+    .buying__card { padding: 22px; }
+    .buying__intro { font-size: 15px; }
   }
 
   @media (max-width: 420px) {
-    .process__title { font-size: 27px; }
+    .buying__title { font-size: 27px; }
   }
 </style>
