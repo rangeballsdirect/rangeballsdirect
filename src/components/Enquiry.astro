@@ -42,7 +42,6 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(site.enquirySu
         Include your range or course.
       </p>
       <a class="btn btn--pop panel__cta" href={mailto}>Send an enquiry →</a>
-      <p class="panel__response">Carl responds within 30 minutes.</p>
     </div>
   </div>
 </section>
@@ -118,13 +117,6 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(site.enquirySu
   }
 
   .panel__cta { margin-top: 26px; }
-
-  .panel__response {
-    margin: 8px 0 0;
-    font-size: 10.5px;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.48);
-  }
 
   @media (max-width: 900px) {
     .enquiry__grid { grid-template-columns: 1fr; gap: 28px; }
