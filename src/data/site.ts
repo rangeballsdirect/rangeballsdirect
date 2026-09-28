@@ -51,7 +51,6 @@ export const countries = [
 
 export const buying = {
   heading: 'Your range-ball partner',
-  intro: 'You deal directly with our PGA professional, who has spent 30 years working on driving ranges. Together, we look at the ball you need now, how you manage the balls already on your range and what the next order should look like.',
   options: [
     {
       title: 'A ball procurement plan',

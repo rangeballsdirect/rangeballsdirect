@@ -7,7 +7,6 @@ import { buying } from '../data/site';
     <header class="buying__head">
       <p class="eyebrow buying__eyebrow">Buying from us</p>
       <h2 class="h2 buying__title">{buying.heading}</h2>
-      <p class="buying__intro">{buying.intro}</p>
     </header>
 
     <div class="buying__grid">
@@ -26,8 +25,7 @@ import { buying } from '../data/site';
 
   .buying__head { max-width: 800px; margin-bottom: 34px; }
   .buying__eyebrow { color: var(--pop); margin: 0 0 12px; }
-  .buying__title { font-size: 38px; line-height: 1.12; margin: 0 0 18px; color: #fff; }
-  .buying__intro { max-width: 66ch; margin: 0; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.72); }
+  .buying__title { font-size: 38px; line-height: 1.12; margin: 0; color: #fff; }
 
   .buying__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
   .buying__card { border: 1px solid var(--lined); border-radius: 16px; padding: 28px; }
@@ -41,7 +39,6 @@ import { buying } from '../data/site';
   @media (max-width: 640px) {
     .buying__grid { grid-template-columns: 1fr; }
     .buying__card { padding: 22px; }
-    .buying__intro { font-size: 15px; }
   }
 
   @media (max-width: 420px) {
