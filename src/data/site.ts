@@ -50,11 +50,12 @@ export const countries = [
 ];
 
 export const buying = {
-  heading: 'Your range-ball partner',
+  heading: 'Your range, your ball partner',
+  strapline: 'We take your business to the ball plant.',
   options: [
     {
       title: 'A ball procurement plan',
-      note: 'We can map out quantities, ball specification and replenishment over time, with branding and delivery timing built around how your range operates.',
+      note: 'We can create a tailor-made plan for ball procurement and replenishment over time, with branding and delivery timing built around how your range operates.',
     },
     {
       title: 'Payment & terms',
