@@ -39,6 +39,7 @@ export const hero = {
       coverMaterials: 'E/MAA–Zn/Na, TiO₂, BaSO₄ and HALS',
       accent: true,
     },
+    { figure: 'Production', note: 'From raw materials to finished ball, quality checks at key stages keep the production run on spec.', coreFormula: null, coverMaterials: null },
     { figure: 'UK, Ireland & DACH', note: 'Deutschland, Austria and Switzerland', coreFormula: null, coverMaterials: null },
     { figure: '1 working day', note: 'Typical reply to a new enquiry', coreFormula: null, coverMaterials: null },
   ],
