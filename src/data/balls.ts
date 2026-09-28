@@ -4,7 +4,7 @@
  */
 export interface Ball {
   name: string;
-  blurb: string;
+  blurb?: string;
 }
 
 export const balls: Ball[] = [
@@ -18,7 +18,6 @@ export const balls: Ball[] = [
   },
   {
     name: 'High Optic Yellow',
-    blurb: 'High-visibility optic shades that hold up in low light and winter play',
   },
   {
     name: 'Custom Logo',
